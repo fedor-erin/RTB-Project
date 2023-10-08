@@ -66,14 +66,14 @@ def train_pipeline(train_df: pd.DataFrame, logger: Logger) -> Tuple[Pipeline, di
     logger.info('The pipeline is built')
 
     pipeline.fit(X, y)
-    logger.info('The model is trained')
+    version = datetime.now().strftime('%Y%m%d')
+    save_model(pipeline, version)
+    logger.info('The model is trained and saved')
 
     metrics = cross_validation_scores(pipeline, X, y)
     logger.info('The cross validation metrics are done')
 
-    version = datetime.now().strftime('%Y%m%d')
-    save_model(pipeline, version)
     save_report(pipeline, metrics, version)
-    logger.info('The model and report with metrics are saved')
+    logger.info('The report with metrics is saved')
 
     return pipeline, metrics
