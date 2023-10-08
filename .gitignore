@@ -2,9 +2,6 @@
 .Python
 venv/
 
-# DotEnv configuration
-.env
-
 # Pycharm
 .idea
 

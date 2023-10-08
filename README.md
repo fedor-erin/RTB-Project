@@ -1,45 +1,44 @@
 Test Assignment
 ==============================
 
-End-to-end DL pipeline for RTB task
+End-to-end ML pipeline for RTB task.
 
-Project Organization
+Project Structure
 ------------
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
     ├── data
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── predictions    <- Saved model predictions as NumPy arrays
+    │   ├── processed      <- The final, canonical data sets for modeling
+    │   └── raw            <- The original, immutable data dump
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── models             <- Trained and serialized models (sklearn pipelines)
     │
     ├── notebooks          <- Jupyter notebooks with exploration
+    │   ├── eda.ipynb       - Exploratory Data Analysis
+    │   ├── modelling.ipynb - Sandbox for testing pipeline and analysing predictions
     │
-    ├── reports            <- Generated analysis, metrics etc.
-    │   └── figures        <- Generated graphics and figures
+    ├── reports            <- Models parameters and validation metrics for pipeline runs
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── src                <- Source code for use in this project.
+    ├── src                <- Source code for use in this project
     │   ├── __init__.py    <- Makes src a Python module
+    │   ├── config.py      <- Config file with namings/parameters
     │   │
-    │   ├── data           <- Scripts to generate data
+    │   ├── data           <- Scripts to generate datasets
     │   │   └── make_dataset.py
     │   │   └── preprocessing.py
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
+    │   ├── models         <- Scripts to train models and make predictions
+    │   │   ├── make_predicting.py
+    │   │   ├── make_training.py
+    │   │   ├── pipeline.py
+    │   │   └── utils.py
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
+    ├── LICENSE
+    ├── Makefile           <- Makefile with commands like `make dataset` or `make training`
+    ├── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io 
+    ├── .gitignore    
+    ├── README.md
+    └── requirements.txt
 
 --------
 
