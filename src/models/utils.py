@@ -6,6 +6,7 @@ import pickle
 
 from sklearn.pipeline import Pipeline
 
+
 def save_model(pipeline: Pipeline, version: str) -> None:
     """
     Save model/pipeline into pickle file
@@ -14,15 +15,17 @@ def save_model(pipeline: Pipeline, version: str) -> None:
     with open(model_path, 'wb') as f:
         pickle.dump(pipeline, f)
 
+
 def load_model() -> Pipeline:
     """
     Load the latest version of the model
     """
     list_of_models = glob.glob('models/*')
     latest_model = max(list_of_models, key=os.path.getmtime)
-    with open(latest_model ,'rb') as f:
+    with open(latest_model, 'rb') as f:
         model = pickle.load(f)
     return model
+
 
 def save_report(pipeline: Pipeline, metrics: dict, version: str) -> None:
     """
@@ -35,6 +38,7 @@ def save_report(pipeline: Pipeline, metrics: dict, version: str) -> None:
     }
     with open(report_path, 'w') as f:
         yaml.dump(report, f, allow_unicode=True, default_flow_style=False)
+
 
 def save_predictions(predictions: np.array, version: str) -> None:
     """

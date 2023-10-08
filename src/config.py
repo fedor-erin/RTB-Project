@@ -15,7 +15,7 @@ NUMERICAL_FEATURES = [
     'installCount',
     'startCount1d',
     'startCount7d',
-    'fromLastStart', # new feature
+    'fromLastStart',  # new feature
 ]
 TARGET = 'install'
 

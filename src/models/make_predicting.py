@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 
 from utils import save_predictions, load_model
 
+
 def predict(pipeline: Pipeline, test_df: pd.DataFrame) -> np.array:
     """
     Make a prediction for a probability of class=1 and save it
@@ -14,6 +15,7 @@ def predict(pipeline: Pipeline, test_df: pd.DataFrame) -> np.array:
     version = datetime.now().strftime('%Y%m%d')
     save_predictions(preds, version)
     return preds
+
 
 def main():
     """
@@ -30,6 +32,7 @@ def main():
 
     preds = predict(pipeline, test_df)
     logger.info(f'Predictions are made and saved. Mean probability is {preds.mean():.3f}')
+
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

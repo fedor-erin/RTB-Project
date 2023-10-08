@@ -2,6 +2,7 @@ import pandas as pd
 
 from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, TARGET
 
+
 def read_data(file_path: str) -> pd.DataFrame:
     return pd.read_csv(
         file_path,
@@ -11,6 +12,7 @@ def read_data(file_path: str) -> pd.DataFrame:
         parse_dates=['timestamp', 'lastStart']
     )
 
+
 def generate_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Feature generation
@@ -19,6 +21,7 @@ def generate_features(df: pd.DataFrame) -> pd.DataFrame:
     data = df.copy()
     data['fromLastStart'] = (data['timestamp'] - data['lastStart']).apply(lambda x: x.total_seconds() / 3600)
     return data
+
 
 def process_raw(df: pd.DataFrame,
                 mode: str = 'train') -> pd.DataFrame:
@@ -38,6 +41,7 @@ def process_raw(df: pd.DataFrame,
         columns += [TARGET]
 
     return df[columns]
+
 
 def save_df(df: pd.DataFrame,
             mode: str = 'train') -> None:

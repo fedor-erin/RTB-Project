@@ -55,6 +55,7 @@ def cross_validation_scores(pipeline: Pipeline,
         'log_loss': log_loss_cv,
     }
 
+
 def train_pipeline(train_df: pd.DataFrame, logger: Logger) -> Tuple[Pipeline, dict]:
     """
     Train a model pipeline, report metrics, save it

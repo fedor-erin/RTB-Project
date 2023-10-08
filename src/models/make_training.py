@@ -1,11 +1,11 @@
+from src.models.pipeline import train_pipeline
+
 import logging
 import pandas as pd
 
 import warnings
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings('ignore', category=ConvergenceWarning)
-
-from src.models.pipeline import train_pipeline
 
 
 def main():
@@ -22,6 +22,7 @@ def main():
     logger.info(f'{str(pipeline)}')
     logger.info(f'{str(metrics)}')
     logger.info('Pipeline is done')
+
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
