@@ -9,8 +9,13 @@ venv/
 .ipynb_checkpoints/
 
 # exclude heavy datasets
-/data/raw
-/data/processed
+/data/raw/*
+/data/processed/*
+
+# Airflow files
+/airflow/config/*
+/airflow/logs/*
+/airflow/plugins/*
 
 # Mac OS-specific storage files
 .DS_Store

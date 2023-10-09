@@ -6,25 +6,28 @@ End-to-end ML pipeline for RTB task. Fedor Erin, Oct 2023.
 How to run a pipeline
 ------------
 
-1. Clone project directory and run the following commands in it:
+1. Clone project directory
+2. Put raw data - `training_data.csv.gz` and `test_data.csv.gz` - into `data/raw` folder
+3. Run the following commands from the project directory:
    1. Initialize Airflow: `docker compose up airflow-init`
-   2. Build Docker image: `docker build -f dags/docker_job/Dockerfile -t docker_job_image .`
+   2. Build Docker image: `docker build -f airflow/dags/pipeline/Dockerfile -t docker_job_image .`
    3. Start Airflow components: `docker compose up`
       * make sure all containers are up and running:![img_1.png](imgs/img_1.png)
 4. Visit `http://localhost:8080/` and log in using `user=airflow` and `password=airflow`
 5. Run DAG with all pipeline steps, check out tasks (containers) logs, if needed
-6. After completion, the new files are created:
-   * `data/predictions/predictions_*.npy` - probability predictions for test data
+6. After completion, the new files are created locally:
+   * `data/processed/*_df.csv` - processed datasets for train/test
    * `models/pipeline_*.pkl` - trained model/pipeline
    * `reports/report_*.yaml` - cross-validation metrics and model parameters
-
+   * `data/predictions/predictions_*.npy` - probability predictions for test data
+   
 Project Structure
 ------------
 
     ├── dags                  <- Airflow DAGs
-    │   ├── docker_job        <- Pipeline Dockefile and DAG file
+    │   ├── pipeline          <- Pipeline Dockefile and DAG file
     │   |   └── Dockerfile 
-    │   |   └── docker-job.py
+    │   |   └── pipeline.py
     ├── data
     │   ├── predictions       <- Saved model predictions as NumPy arrays
     │   ├── processed         <- The final, canonical data sets for modeling
