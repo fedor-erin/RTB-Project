@@ -8,6 +8,7 @@ RUN apt-get update -y \
 RUN adduser --disabled-password --gecos '' airflow
 USER airflow
 
+ENV PYTHONPATH /app
 WORKDIR /app
 COPY src/ /app/src
 COPY requirements.txt /app/

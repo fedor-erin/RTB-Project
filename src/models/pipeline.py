@@ -71,6 +71,7 @@ def train_pipeline(train_df: pd.DataFrame, logger: Logger) -> Tuple[Pipeline, di
     save_model(pipeline, version)
     logger.info('The model is trained and saved')
 
+    logger.info('Starting cross validation')
     metrics = cross_validation_scores(pipeline, X, y)
     logger.info('The cross validation metrics are done')
 
