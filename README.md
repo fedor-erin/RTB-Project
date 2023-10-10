@@ -1,45 +1,68 @@
-Test Assignment
-==============================
+# Test Assignment
 
 End-to-end ML pipeline for RTB task. Fedor Erin, Oct 2023.
 
-How to run a pipeline
-------------
+## Setup
+1) Put the raw data `training_data.csv.gz` and `test_data.csv.gz` into `data/raw` project local folder:
 
-1. Clone project directory
-2. Put raw data - `training_data.csv.gz` and `test_data.csv.gz` - into `data/raw` folder
-3. Run the following commands from the project directory:
-   1. Initialize Airflow: `docker compose up airflow-init`
-   2. Build Docker image: `docker build -f airflow/dags/pipeline/Dockerfile -t docker_job_image .`
-   3. Start Airflow components: `docker compose up`
-      * make sure all containers are up and running:![img_1.png](imgs/img_1.png)
-4. Visit `http://localhost:8080/` and log in using `user=airflow` and `password=airflow`
-5. Run DAG with all pipeline steps, check out tasks (containers) logs, if needed
-6. After completion, the new files are created locally:
-   * `data/processed/*_df.csv` - processed datasets for train/test
-   * `models/pipeline_*.pkl` - trained model/pipeline
-   * `reports/report_*.yaml` - cross-validation metrics and model parameters
-   * `data/predictions/predictions_*.npy` - probability predictions for test data
+<p align="center"><img src="imgs/data_layout.png" width="200"></p>
+
+2) Run the master script to consequently initialize Airflow, build Docker image and start all components as containers:
+
+```bash
+sh run.sh
+```
+
+3) Visit `http://localhost:8080/` and log in using the credentials: `user=airflow` and `password=airflow`. 
+There are two DAGs, for train and predict:
+
+<p align="center"><img src="imgs/dags.png" width="400"></p>
+
+4) Run the training DAG first:
+
+<p align="center"><img src="imgs/train_dag.png" width="500"></p>
+
+- As a result, it creates in the project the following files:
+  - `data/processed/train_df.csv` - processed dataset for train
+  - `models/pipeline_*.pkl` - trained model/pipeline
+  - `reports/report_*.yaml` - cross-validation metrics and model parameters
    
-Project Structure
-------------
 
-    ├── dags                  <- Airflow DAGs
-    │   ├── pipeline          <- Pipeline Dockefile and DAG file
-    │   |   └── Dockerfile 
-    │   |   └── pipeline.py
+5) Next, run the predicting DAG:
+
+<p align="center"><img src="imgs/predict_dag.png" width="500"></p>
+
+- As a result, it creates the following files:
+  - `data/processed/test_df.csv` - processed dataset for test
+  - `data/predictions/predictions_*.npy` - probability predictions for test data
+
+6) Check out the tasks (containers) logs, if needed, as well as intermediate and resulting files.
+
+## Project Structure
+
+    ├── airflow               <- Airflow folder
+    │   ├──dags               <- DAGs folder
+    │   |   ├── pipeline      <- Job Dockerfile and pipelines DAG files
+    │   |   |   └── Dockerfile 
+    │   |   |   └── predict_pipeline.py
+    │   |   |   └── train_pipeline.py
+    │   ├──config            
+    │   ├──logs               <- Airflow auxiliary directories
+    │   └──plugins   
+    │
     ├── data
     │   ├── predictions       <- Saved model predictions as NumPy arrays
     │   ├── processed         <- The final, canonical data sets for modeling
     │   └── raw               <- The original, immutable data dump
     │
+    ├── imgs                  <- Images for README
+    │    
     ├── models                <- Trained and serialized models (sklearn pipelines)
     │
     ├── notebooks             <- Jupyter notebooks with exploration
-    │   ├── eda.ipynb         <- Exploratory Data Analysis
-    │   ├── modelling.ipynb   <- Sandbox for testing pipeline and analysing predictions
+    │   └── eda.ipynb         <- Exploratory Data Analysis│
     │
-    ├── reports               <- Models parameters and validation metrics for pipeline runs
+    ├── reports               <- YAML reports with models parameters and validation metrics
     │
     ├── src                   <- Source code for use in this project
     │   ├── __init__.py       <- Makes src a Python module
@@ -56,12 +79,13 @@ Project Structure
     │   │   └── utils.py
     │   │
     ├── LICENSE
-    ├── .gitignore    
+    ├── .env                  <- Environment variables
+    ├── .gitignore
     ├── README.md
-    ├── .flake8
-    ├── requirements.txt
-    └── docker-compose.yaml   <- Airflow services for a pipeline
+    ├── run.sh                <- Master script to run the project
+    ├── .flake8               <- Style checker config
+    ├── requirements.txt      <- Packages required for pipeline
+    └── docker-compose.yaml   <- Airflow services for pipeline
 
---------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
