@@ -15,14 +15,12 @@ from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, TARGET, RANDOM_
 
 def build_pipeline() -> Pipeline:
     """
-    Build a pipeline of a scaler, one-hot encoder and a classifier model
+    Build a basic pipeline of a scaler, one-hot encoder and a classifier model
     """
     num_transformer = StandardScaler()
     cat_transformer = OneHotEncoder(handle_unknown='ignore')
-
     preprocessor = ColumnTransformer(transformers=[('scaler', num_transformer, NUMERICAL_FEATURES),
                                                    ('ohe', cat_transformer, CATEGORICAL_FEATURES)])
-
     pipeline = Pipeline(steps=[('preprocessor', preprocessor),
                                ('classifier', LogisticRegression(random_state=RANDOM_SEED))])
     return pipeline
@@ -31,9 +29,9 @@ def build_pipeline() -> Pipeline:
 def cross_validation_scores(pipeline: Pipeline,
                             X: pd.DataFrame,
                             y: pd.Series,
-                            cv: int = 3) -> dict:
+                            cv: int) -> dict:
     """
-    Get cross validation scores
+    Get cross validation scores for 3 metrics: ROC AUC, Brier score, Log Loss
     """
     params = {'estimator': pipeline,
               'X': X,
@@ -56,26 +54,28 @@ def cross_validation_scores(pipeline: Pipeline,
     }
 
 
-def train_pipeline(train_df: pd.DataFrame, logger: Logger) -> Tuple[Pipeline, dict]:
+def train_pipeline(train_df: pd.DataFrame,
+                   logger: Logger) -> Tuple[Pipeline, dict]:
     """
     Train a model pipeline, report metrics, save it
     """
     X, y = train_df[CATEGORICAL_FEATURES + NUMERICAL_FEATURES], train_df[TARGET]
-    logger.info(f'The dataset {X.shape} is ready')
+    logger.info(f'Dataset with a shape {X.shape} is ready')
 
+    logger.info('Defining pipeline...')
     pipeline = build_pipeline()
-    logger.info('The pipeline is built')
 
+    logger.info('Training pipeline...')
     pipeline.fit(X, y)
+
+    logger.info('Cross validation...')
+    metrics = cross_validation_scores(pipeline, X, y, cv=3)
+
+    logger.info('Saving model...')
     version = datetime.now().strftime('%Y%m%d')
-    save_model(pipeline, version)
-    logger.info('The model is trained and saved')
+    save_model(pipeline, version, logger)
 
-    logger.info('Starting cross validation')
-    metrics = cross_validation_scores(pipeline, X, y)
-    logger.info('The cross validation metrics are done')
-
-    save_report(pipeline, metrics, version)
-    logger.info('The report with metrics is saved')
+    logger.info('Saving validation and model parameters report...')
+    save_report(pipeline, metrics, version, logger)
 
     return pipeline, metrics

@@ -7,13 +7,15 @@ from sklearn.pipeline import Pipeline
 from utils import save_predictions, load_model
 
 
-def predict(pipeline: Pipeline, test_df: pd.DataFrame) -> np.array:
+def predict(pipeline: Pipeline,
+            test_df: pd.DataFrame,
+            logger: logging.Logger) -> np.array:
     """
     Make a prediction for a probability of class=1 and save it
     """
     preds = pipeline.predict_proba(test_df)[:, 1]
     version = datetime.now().strftime('%Y%m%d')
-    save_predictions(preds, version)
+    save_predictions(preds, version, logger)
     return preds
 
 
@@ -22,16 +24,18 @@ def main():
     Runs predicting for test data, save it
     """
     logger = logging.getLogger(__name__)
-    logger.info('Running predicting for test data')
 
+    logger.info('Reading processed test data...')
     test_df = pd.read_csv('data/processed/test_df.csv')
-    logger.info('Test dataframe is read')
 
-    pipeline = load_model()
-    logger.info('Model is loaded')
+    logger.info('Loading model...')
+    pipeline = load_model(logger)
 
-    preds = predict(pipeline, test_df)
-    logger.info(f'Predictions are made and saved. Mean probability is {preds.mean():.3f}')
+    logger.info('Predicting...')
+    preds = predict(pipeline, test_df, logger)
+    logger.info(f'Mean probability is {preds.mean():.3f}')
+
+    logger.info('Done!')
 
 
 if __name__ == '__main__':

@@ -1,9 +1,13 @@
 import pandas as pd
+from logging import Logger
 
 from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, TARGET
 
 
 def read_data(file_path: str) -> pd.DataFrame:
+    """
+    Read raw data into DataFrame with parsed dates
+    """
     return pd.read_csv(
         file_path,
         sep=';',
@@ -15,7 +19,7 @@ def read_data(file_path: str) -> pd.DataFrame:
 
 def generate_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Feature generation
+    Simple feature generation
     """
     # add diff in hours between the event and last any campaign start
     data = df.copy()
@@ -24,9 +28,9 @@ def generate_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def process_raw(df: pd.DataFrame,
-                mode: str = 'train') -> pd.DataFrame:
+                mode: str) -> pd.DataFrame:
     """
-    Preprocess a raw data into a dataset
+    Preprocess a raw data into a dataset. Mode is 'train' or 'test'
     """
     # feature generation
     df = generate_features(df)
@@ -44,9 +48,11 @@ def process_raw(df: pd.DataFrame,
 
 
 def save_df(df: pd.DataFrame,
-            mode: str = 'train') -> None:
+            mode: str,
+            logger: Logger) -> None:
     """
-    Save processed data
+    Save processed data into a dataset for a pipeline. Mode is 'train' or 'test'
     """
     df_path = f'data/processed/{mode}_df.csv'
+    logger.info(f'File: {df_path}')
     df.to_csv(df_path, index=False)

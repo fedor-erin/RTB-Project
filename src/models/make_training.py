@@ -13,15 +13,19 @@ def main():
     Runs training pipeline, save model, perform cross validation, report metrics
     """
     logger = logging.getLogger(__name__)
-    logger.info('Running a training pipeline ')
 
+    logger.info('Reading processed train data...')
     train_df = pd.read_csv('data/processed/train_df.csv')
-    logger.info('Train dataframe is read')
 
+    logger.info('Starting training pipeline...')
     pipeline, metrics = train_pipeline(train_df, logger)
+
+    logger.info('Pipeline info:')
     logger.info(f'{str(pipeline)}')
+    logger.info('Report info:')
     logger.info(f'{str(metrics)}')
-    logger.info('Pipeline is done')
+
+    logger.info('Done!')
 
 
 if __name__ == '__main__':

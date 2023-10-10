@@ -11,7 +11,6 @@ def main(mode):
     Runs data processing scripts to turn raw data from (../raw) into cleaned data (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('Making a dataset from raw data')
 
     if mode == 'train':
         file_name = 'training_data'
@@ -20,14 +19,16 @@ def main(mode):
     else:
         raise Exception(f'Wrong mode={mode}! Should be train or test.')
 
+    logger.info('Reading raw data...')
     df = read_data(f'data/raw/{file_name}.csv.gz')
-    logger.info('Raw data is read')
 
+    logger.info('Processing raw data...')
     df = process_raw(df, mode)
-    logger.info('Raw data is processed')
 
-    save_df(df, mode)
-    logger.info('Processed data is saved')
+    logger.info('Saving processed data...')
+    save_df(df, mode, logger)
+
+    logger.info('Done!')
 
 
 if __name__ == '__main__':
