@@ -7,6 +7,11 @@
   * Solution description and considerations
 
 ## Setup
+0) Ensure the environment:
+   - Create `venv` with IDE
+   - Install the dependencies with `pip install -r requirements_venv.txt`
+   - Make sure that Docker daemon is up and running, e.g. check with `docker ps` 
+
 1) Put the raw data `training_data.csv.gz` and `test_data.csv.gz` into `data/raw` project local folder:
 
 <p align="center"><img src="imgs/data_layout.png" width="200"></p>
@@ -88,7 +93,8 @@ There are two DAGs, for train and predict:
     ├── README.md
     ├── run.sh                <- Master script to run the project
     ├── .flake8               <- Style checker config
-    ├── requirements.txt      <- Packages required for pipeline
+    ├── requirements.txt      <- Packages required for Docker tasks
+    ├── requirements_venv.txt <- pip freeze of project's venv for full reproducibility
     └── docker-compose.yaml   <- Airflow services for pipeline
 
 ## Solution description and considerations
