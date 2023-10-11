@@ -1,6 +1,7 @@
-# Distribution / packaging
+# Python
 .Python
 venv/
+__pycache__
 
 # Pycharm
 .idea
