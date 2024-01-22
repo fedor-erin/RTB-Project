@@ -4,7 +4,7 @@
 * README contains 3 parts: 
   * Setup
   * Project structure
-  * Solution description and considerations
+  * Approach description and considerations
 
 ## Setup
 0) Ensure the environment:
@@ -97,19 +97,19 @@ There are two DAGs, for train and predict:
     ├── requirements_venv.txt <- pip freeze of project's venv for full reproducibility
     └── docker-compose.yaml   <- Airflow services for pipeline
 
-## Solution description and considerations
+## Approach description and considerations
 
 1) Description of the pipeline and design choices:
    1) The train and predict pipelines are separated. The train pipeline is intended for periodic offline training, while
 the predict pipeline is designed to run as frequently as needed and utilizes the trained model.
-   2) The solution incorporates containerization to keep Airflow and its components running in containers as services. 
+   2) The approach incorporates containerization to keep Airflow and its components running in containers as services. 
 Each of the DAG's tasks is executed with DockerOperator, enabling independent and customizable environments for various 
 types of tasks.
    3) As a predictive model it's used a LogReg classifier for simplicity which sets a baseline of prediction metrics 
 and can be further improved. It's recommended to use a DL model with Embeddings layers to handle high cardinality of 
 categorical features, e.g. `nn.Embedding` represents each category as embedding vector, then all the tensors are 
 concatenated alongside with numerical features and passed forward to dense layers.
-2) Additional considerations for deploying such a solution at scale:
+2) Additional considerations for deploying such a approach at scale:
    1) __Fast real-time inference__: the model must efficiently process input data, make predictions, and store results 
 in a key-value store, such as Aerospike, for subsequent use by the other backend services.
    2) __Model as a service__: the model can be encapsulated as an API, such as FastAPI, to deliver optimal performance 
