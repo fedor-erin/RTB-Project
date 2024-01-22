@@ -2,7 +2,7 @@
 
 * End-to-end ML pipeline for RTB task
 * README contains 3 parts: 
-  * Setup
+  * Setup instruction
   * Project structure
   * Approach description and considerations
 
