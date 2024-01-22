@@ -1,4 +1,4 @@
-# Test Assignment
+## RTB Project
 
 * End-to-end ML pipeline for RTB task
 * README contains 3 parts: 
